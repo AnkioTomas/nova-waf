@@ -1,0 +1,33 @@
+name: 命令执行
+desc: 检测是否存在通过用户输入执行系统命令的漏洞。
+level: high
+status: true
+rules:
+  # 匹配常见的命令执行函数和方法
+  # 支持 PHP, Python, Ruby, Perl, Java 等语言
+  - # PHP 函数
+    - (exec|system|passthru|shell_exec|proc_open|popen)\s*\(.+\)
+    # Python 函数
+    - (os\.system|os\.popen|subprocess\.Popen|subprocess\.call|subprocess\.run|eval|exec)\s*\(.+\)
+    # Ruby 方法
+    - (`system|exec|popen|spawn|IO\.popen|IO\.sysopen|eval)\s*\(.+\)
+    # Perl 函数
+    - (`system|exec|open|eval)\s*\(.+\)
+    # Java 方法
+    - (Runtime\.getRuntime\(\)\.exec|ProcessBuilder)\s*\(.+\)
+    # 通用 eval 函数
+    - eval\s*\(.+\)
+    # 通用反引号命令
+    - `[^`]+`
+
+    # 检测常见的命令注入符号
+    - [\|\`\$\&\;><]
+
+    # 匹配命令执行函数周围的非字母数字字符
+    - [^a-zA-Z0-9](exec|system|passthru|shell_exec|proc_open|popen|os\.system|os\.popen|subprocess\.Popen|subprocess\.call|subprocess\.run|eval|exec|Runtime\.getRuntime\(\)\.exec|ProcessBuilder|`[^`]+`)[^a-zA-Z0-9]
+
+    # 检测逻辑运算符和换行符
+    - (\|\||\&\&|\\n|\\r)
+
+    #  检测命令替换和变量解析
+    - (\$\{.*\}|\$\(.*\)|\$\$|`.*`|\\u0024\{.*\}|\\u0024\(.*\))

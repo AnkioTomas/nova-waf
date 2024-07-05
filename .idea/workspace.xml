@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e23597d1-9089-4c26-9342-e72b61e1e14d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/waf/access.lua" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/waf/config.lua" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/waf/init.lua" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/waf/lib.lua" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/waf/rule-config/args.rule" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/waf/rule-config/blackip.rule" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/waf/rule-config/cookie.rule" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/waf/rule-config/post.rule" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/waf/rule-config/url.rule" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/waf/rule-config/useragent.rule" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/waf/rule-config/whiteip.rule" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/waf/rule-config/whiteurl.rule" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP" />
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2ilhotCfh2ukBOI4Kp9I5cibP7K" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-PS-241.17011.119" />
+        <option value="bundled-php-predefined-ba97393d7c68-48a1a656d44e-com.jetbrains.php.sharedIndexes-PS-241.17011.119" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e23597d1-9089-4c26-9342-e72b61e1e14d" name="Changes" comment="" />
+      <created>1720071248530</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1720071248530</updated>
+      <workItem from="1720071249783" duration="49000" />
+      <workItem from="1720071310822" duration="68000" />
+      <workItem from="1720071386346" duration="2524000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  nova-server-openresty:
+    image: openresty/openresty:alpine
+    container_name: nova-server-openresty
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
+      - ../src:/usr/local/openresty/waf:ro
+      - ../logs:/usr/local/openresty/nginx/logs/
+    environment:
+      - TZ=Asia/Shanghai # 设置时区
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+    restart: always
+    depends_on:
+      - nova-server-redis
+
+  nova-server-redis:
+    container_name: nova-server-redis
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    restart: always  
