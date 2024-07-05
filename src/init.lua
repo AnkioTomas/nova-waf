@@ -13,6 +13,7 @@ RULE_FILES = {}
 WAF_CONFIG = {}
 WHITE_IPS = {}
 BLACK_IPS = {}
+LOGGERS = {}
 
 -- 更新 package.path 以包含 utils 目录
 package.path = package.path .. ";" .. CURRENT_PATH .. "/utils/?.lua"
@@ -22,9 +23,25 @@ function load_config()
     local filename = CURRENT_PATH .. "conf.d/waf.conf"
     WAF_CONFIG = {}
     for line in io.lines(filename) do
-        local key, value = line:match("^(%w+)%s*=%s*(%w+)$")
-        if key and value then
-            WAF_CONFIG[key] = value
+       -- ngx.log(ngx.INFO, "WAF Config line: ", line)
+        line = string.match(line, "^[^#]*")
+        if line then
+            line = string.gsub(line, "%s+", "")
+            if line ~= "" then
+                local key, value = string.match(line, "([^=]+)=([^=]+)")
+                if key and value then
+                    
+                    -- trim
+                    key = string.gsub(key, "^%s*(.-)%s*$", "%1")
+                    value = string.gsub(value, "^%s*(.-)%s*$", "%1")
+                    -- 剔除引号
+                    value = string.gsub(value, "^\"(.-)\"$", "%1")
+                    WAF_CONFIG[key] = value
+                    ngx.log(ngx.INFO, "WAF Config line match: " .. key .. " = " .. value)
+                else
+                    ngx.log(ngx.WARN, "Invalid config line: " .. line)
+                end
+            end
         end
     end
 end
@@ -87,7 +104,6 @@ function load_rules()
     for file in iterate_directory(rules_directory) do
         if file:match("%.yml$") then
             local config_key_2 = "exp_" .. file:match("^(%w+)%..*$")  -- 例如 "exp_backup"
-            print("config_key_2: ", config_key_2)
             if WAF_CONFIG[config_key_2] == "off" then
                 -- 跳过处理此文件
             else
@@ -112,6 +128,5 @@ load_ips()
 ngx.log(ngx.INFO, "WAF loading rules......")
 load_rules()
 ngx.log(ngx.INFO, "WAF init finished.")
-
 
 

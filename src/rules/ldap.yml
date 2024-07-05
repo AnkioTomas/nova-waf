@@ -1,8 +1,8 @@
-- name: LDAP安全检测绕过
-  desc: 检测是否存在可能绕过LDAP安全控制的字符串形式。
-  level: high
-  status: true
-  rules:
+name: LDAP安全检测绕过
+desc: 检测是否存在可能绕过LDAP安全控制的字符串形式。
+level: high
+status: true
+rules:
     - ${jndi:
     - $%7Bjndi:
     - %24%7Bjndi:

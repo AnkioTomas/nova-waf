@@ -3,18 +3,20 @@
 
 local _M = {}
 
-local stringutf8 = require "stringutf8"
+
 
 local pairs = pairs
 local ipairs = ipairs
 local tonumber = tonumber
 local find = string.find
 local sub = string.sub
-local trim = stringutf8.trim
 local ngxmatch = ngx.re.match
 
 local insert = table.insert
-
+ -- 去除字符串两端空白字符的 trim 函数
+ local function trim(s)
+    return (s:gsub("^%s*(.-)%s*$", "%1"))
+end
 function _M.getClientIP()
     local var = ngx.var
     local ips = {
