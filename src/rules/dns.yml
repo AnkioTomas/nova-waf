@@ -1,9 +1,0 @@
-name: DNSLog黑名单
-desc: 检测是否存在通过DNSLog加载外部资源的漏洞。
-level: medium
-status: true
-rules:
-  - dnslog\.\w+
-  - dig.pm
-  - ceye\.\w+
-  - eyes\.sh

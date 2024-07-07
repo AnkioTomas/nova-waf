@@ -14,9 +14,10 @@ WAF_CONFIG = {}
 WHITE_IPS = {}
 BLACK_IPS = {}
 LOGGERS = {}
+DEBUG = false
 
 -- 更新 package.path 以包含 utils 目录
-package.path = package.path .. ";" .. CURRENT_PATH .. "/utils/?.lua"
+package.path = package.path .. ";" .. CURRENT_PATH .. "/utils/?.lua;" .. CURRENT_PATH .. "/rules/?.lua"
 
 -- 加载配置文件
 function load_config()
@@ -99,21 +100,25 @@ function load_rules()
 
     local rules_directory = CURRENT_PATH .. "rules/"
    
-    local yml = require "yml"
 
     for file in iterate_directory(rules_directory) do
-        if file:match("%.yml$") then
-            local config_key_2 = "exp_" .. file:match("^(%w+)%..*$")  -- 例如 "exp_backup"
-            if WAF_CONFIG[config_key_2] == "off" then
+        if file:match("%.lua$") then
+            local key = file:match("^(%w+)%..*$")  -- 例如 "sqli"
+            local config_key = "exp_" .. key  -- 例如 "exp_backup"
+            if WAF_CONFIG[config_key] == "off" then
                 -- 跳过处理此文件
             else
                 local file_path = rules_directory .. file
-                local file = yml.read_file(file_path)
-                local data = yml.parse_yaml(file)
                 ngx.log(ngx.INFO, "WAF initialized with rule: ", file_path)
-                RULE_FILES[file] = data
+                RULE_FILES[key] = require(key)
             end
         end
+    end
+end
+
+function load_debug()
+    if WAF_CONFIG["debug"] == "on" then
+        DEBUG = true
     end
 end
 
@@ -128,5 +133,6 @@ load_ips()
 ngx.log(ngx.INFO, "WAF loading rules......")
 load_rules()
 ngx.log(ngx.INFO, "WAF init finished.")
+load_debug()
 
 

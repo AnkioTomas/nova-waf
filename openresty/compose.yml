@@ -11,6 +11,7 @@ services:
       - ./nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
       - ../src:/usr/local/openresty/waf:ro
       - ../logs:/usr/local/openresty/nginx/logs/
+      - ./DEBUG:/usr/local/openresty/waf/DEBUG
     environment:
       - TZ=Asia/Shanghai # 设置时区
       - REDIS_HOST=redis

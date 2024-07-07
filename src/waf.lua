@@ -40,7 +40,14 @@ local function ret403(msg)
     -- 设置响应头和替换页面内容中的占位符
     ngx.header.content_type = "text/html"
     ngx.status = ngx.HTTP_FORBIDDEN
-    content = string.gsub(content, "{BLOCK_REASON}", msg)
+    -- content = string.gsub(content, "{BLOCK_REASON}", msg)
+    if DEBUG then
+        content = msg
+    else 
+        content = string.gsub(content, "{BLOCK_REASON}", msg)     
+    end
+
+    -- content = msg
     ngx.say(content)
     ngx.exit(ngx.HTTP_FORBIDDEN)
 end
@@ -174,6 +181,34 @@ local function print_table(t, indent)
         end
     end
 end
+local function regex_to_lua_pattern(regex)
+    local lua_pattern = regex
+
+    -- Escape Lua pattern special characters
+    lua_pattern = lua_pattern:gsub("%%", "%%%%")
+    lua_pattern = lua_pattern:gsub("%^", "%%^")
+    lua_pattern = lua_pattern:gsub("%$", "%%$")
+    lua_pattern = lua_pattern:gsub("%(", "%%(")
+    lua_pattern = lua_pattern:gsub("%)", "%%)")
+    lua_pattern = lua_pattern:gsub("%.", "%%.")
+    lua_pattern = lua_pattern:gsub("%[", "%%[")
+    lua_pattern = lua_pattern:gsub("%]", "%%]")
+    lua_pattern = lua_pattern:gsub("%*", "%%*")
+    lua_pattern = lua_pattern:gsub("%+", "%%+")
+    lua_pattern = lua_pattern:gsub("%-", "%%-")
+    lua_pattern = lua_pattern:gsub("%?", "%%?")
+    
+    -- Convert common regex patterns to Lua patterns
+    lua_pattern = lua_pattern:gsub("\\d", "%d")
+    lua_pattern = lua_pattern:gsub("\\D", "[^%d]")
+    lua_pattern = lua_pattern:gsub("\\w", "%w")
+    lua_pattern = lua_pattern:gsub("\\W", "[^%w]")
+    lua_pattern = lua_pattern:gsub("\\s", "%s")
+    lua_pattern = lua_pattern:gsub("\\S", "[^%s]")
+    
+    return lua_pattern
+end
+
 -- 检查请求是否符合规范，包括大小和解码
 local function attack(ip)
     local max_decode_count = tonumber(WAF_CONFIG["decode_max_count"]) or 10
@@ -216,14 +251,14 @@ local function attack(ip)
                  -- 检查是否包含恶意字符
              --    print_table(RULE_FILES)         
         for key, rule in pairs(RULE_FILES) do
-            
+        
             for _, pattern in pairs(rule.rules) do
-                ngx.log(ngx.INFO,rule.name .. "=>" .. pattern)
+        
                 if ngx.re.match(data, pattern, "isjo") then
-                    ngx.log(ngx.INFO, "Attack detected: ", pattern)
+                    ngx.log(ngx.INFO, "Attack detected: ", rule.name,"=>",rule.desc)
                    
                     inAttack(ip,rule.name, data,rule.level,rule.desc)
-                    ret403("攻击行为")
+                    ret403("攻击行为: "..rule.name.." => "..pattern)
                     return
                 end
             end
