@@ -11,19 +11,6 @@ services:
       - ./nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
       - ../src:/usr/local/openresty/waf:ro
       - ../logs:/usr/local/openresty/nginx/logs/
-      - ./DEBUG:/usr/local/openresty/waf/DEBUG
     environment:
       - TZ=Asia/Shanghai # 设置时区
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - REDIS_DB=0
     restart: always
-    depends_on:
-      - nova-server-redis
-
-  nova-server-redis:
-    container_name: nova-server-redis
-    image: redis:alpine
-    ports:
-      - "6379:6379"
-    restart: always  
