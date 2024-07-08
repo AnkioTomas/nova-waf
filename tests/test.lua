@@ -59,6 +59,7 @@ PASS = 0
 function testAll()
     local testCases = {
         cmd = "Command Execution",
+        backup = "Backup File"
     }
     for name, desc in pairs(testCases) do
         TOTAL = 0

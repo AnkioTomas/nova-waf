@@ -60,7 +60,7 @@ local _M = {
             confidence = 5  
         },
         {
-            pattern = [[ (dir|type|whoami|systeminfo|tasklist|netstat|ipconfig|certutil|powershell|echo|copy|findstr|ping|tracert|nslookup|net|netsh|wmic)[\s\"'`}]?(?!\w) ]],
+            pattern = [[ (dir|type|whoami|systeminfo|tasklist|netstat|ipconfig|certutil|powershell|echo|findstr|ping|tracert|nslookup|net|netsh|wmic)[\s\"'`}]?(?!\w) ]],
             name = "Common Windows Commands and Files",
             confidence = 5  
         }
