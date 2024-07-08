@@ -36,7 +36,7 @@ end
 
 
 function assertContain(a, b, name)
-    printColor( color.blue,name ..  " Testing... ")
+    printColor( color.magenta,name ..  " Testing... ")
 
     if string.find(a, b) then
         io.write("\27[A\27[2K") -- 清除当前行
