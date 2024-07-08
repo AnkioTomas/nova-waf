@@ -4,7 +4,11 @@ local _M = {
   level = "high",
   position = "all",
   rules = {
-      "(gopher|doc|php|glob|file|phar|zlib|ftp|ldap|dict|ogg|data|http|https|smb|tftp|rsync|telnet|jdbc|rmi|dns|ws|wss|sftp)://"
+    {
+      pattern = [[ (gopher|doc|php|glob|file|phar|zlib|ftp|ldap|dict|ogg|data|smb|tftp|rsync|telnet|jdbc|rmi|dns|ws|wss|sftp):// ]],
+      name = "Potential SSRF URL",
+      confidence = 9
+    }
   }
 }
 

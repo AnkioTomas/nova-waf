@@ -36,8 +36,20 @@ function HttpClient:send_request(url, method, body)
         body = table.concat(response_body)
     }
 end
+function urlencode(str)
+    if str then
+        str = string.gsub(str, "\n", "\r\n")
+        str = string.gsub(str, "([^%w %-%_%.%~])",
+            function(c) return string.format("%%%02X", string.byte(c)) end)
+        str = string.gsub(str, " ", "+")
+    end
+    return str
+end
 
-function HttpClient:get(url)
+function HttpClient:get(url,query)
+    if query then
+        url = url .. "?" .. urlencode(query)
+    end
     return self:send_request(url, "GET")
 end
 

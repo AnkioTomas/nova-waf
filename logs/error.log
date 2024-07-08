@@ -1,27 +1,65 @@
-2024/07/06 02:36:23 [info] 8#8: *17 [lua] waf.lua:285: waf(): IP: 192.168.65.1, client: 192.168.65.1, server: , request: "GET / HTTP/1.1", host: "localhost"
-2024/07/06 02:36:23 [warn] 8#8: *17 [lua] cache.lua:56: cacheGet(): failed to get key: block:192.168.65.1 nil, client: 192.168.65.1, server: , request: "GET / HTTP/1.1", host: "localhost"
-2024/07/06 02:36:23 [info] 8#8: *18 [lua] waf.lua:285: waf(): IP: 192.168.65.1, client: 192.168.65.1, server: , request: "GET /?eval HTTP/1.1", host: "localhost"
-2024/07/06 02:36:23 [warn] 8#8: *18 [lua] cache.lua:56: cacheGet(): failed to get key: block:192.168.65.1 nil, client: 192.168.65.1, server: , request: "GET /?eval HTTP/1.1", host: "localhost"
-2024/07/06 02:38:28 [info] 8#8: *19 [lua] waf.lua:285: waf(): IP: 192.168.65.1, client: 192.168.65.1, server: , request: "GET / HTTP/1.1", host: "localhost"
-2024/07/06 02:38:28 [warn] 8#8: *19 [lua] cache.lua:56: cacheGet(): failed to get key: block:192.168.65.1 nil, client: 192.168.65.1, server: , request: "GET / HTTP/1.1", host: "localhost"
-2024/07/06 02:38:28 [info] 8#8: *20 [lua] waf.lua:285: waf(): IP: 192.168.65.1, client: 192.168.65.1, server: , request: "GET /?eval=id HTTP/1.1", host: "localhost"
-2024/07/06 02:38:28 [warn] 8#8: *20 [lua] cache.lua:56: cacheGet(): failed to get key: block:192.168.65.1 nil, client: 192.168.65.1, server: , request: "GET /?eval=id HTTP/1.1", host: "localhost"
-2024/07/06 02:38:28 [info] 8#8: *20 [lua] waf.lua:258: attack(): Attack detected: 命令执行=>检测到可能的命令执行行为, client: 192.168.65.1, server: , request: "GET /?eval=id HTTP/1.1", host: "localhost"
-2024/07/06 02:42:51 [info] 8#8: *22 [lua] waf.lua:285: waf(): IP: 192.168.65.1, client: 192.168.65.1, server: , request: "GET / HTTP/1.1", host: "localhost"
-2024/07/06 02:42:51 [warn] 8#8: *22 [lua] cache.lua:56: cacheGet(): failed to get key: block:192.168.65.1 nil, client: 192.168.65.1, server: , request: "GET / HTTP/1.1", host: "localhost"
-2024/07/06 02:42:51 [info] 8#8: *23 [lua] waf.lua:285: waf(): IP: 192.168.65.1, client: 192.168.65.1, server: , request: "GET /?eval=id HTTP/1.1", host: "localhost"
-2024/07/06 02:42:51 [warn] 8#8: *23 [lua] cache.lua:56: cacheGet(): failed to get key: block:192.168.65.1 nil, client: 192.168.65.1, server: , request: "GET /?eval=id HTTP/1.1", host: "localhost"
-2024/07/06 02:42:51 [info] 8#8: *23 [lua] waf.lua:258: attack(): Attack detected: 命令执行=>检测到可能的命令执行行为, client: 192.168.65.1, server: , request: "GET /?eval=id HTTP/1.1", host: "localhost"
-2024/07/06 02:43:10 [info] 8#8: *25 [lua] waf.lua:285: waf(): IP: 192.168.65.1, client: 192.168.65.1, server: , request: "GET / HTTP/1.1", host: "localhost"
-2024/07/06 02:43:10 [warn] 8#8: *25 [lua] cache.lua:56: cacheGet(): failed to get key: block:192.168.65.1 nil, client: 192.168.65.1, server: , request: "GET / HTTP/1.1", host: "localhost"
-2024/07/06 02:43:10 [info] 8#8: *26 [lua] waf.lua:285: waf(): IP: 192.168.65.1, client: 192.168.65.1, server: , request: "GET /?eval=id HTTP/1.1", host: "localhost"
-2024/07/06 02:43:10 [warn] 8#8: *26 [lua] cache.lua:56: cacheGet(): failed to get key: block:192.168.65.1 nil, client: 192.168.65.1, server: , request: "GET /?eval=id HTTP/1.1", host: "localhost"
-2024/07/06 02:43:10 [info] 8#8: *26 [lua] waf.lua:258: attack(): Attack detected: 命令执行=>检测到可能的命令执行行为, client: 192.168.65.1, server: , request: "GET /?eval=id HTTP/1.1", host: "localhost"
-2024/07/06 05:12:30 [info] 8#8: *28 [lua] waf.lua:285: waf(): IP: 192.168.65.1, client: 192.168.65.1, server: , request: "GET / HTTP/1.1", host: "localhost"
-2024/07/06 05:12:30 [warn] 8#8: *28 [lua] cache.lua:56: cacheGet(): failed to get key: block:192.168.65.1 nil, client: 192.168.65.1, server: , request: "GET / HTTP/1.1", host: "localhost"
-2024/07/06 05:12:30 [info] 8#8: *29 [lua] waf.lua:285: waf(): IP: 192.168.65.1, client: 192.168.65.1, server: , request: "GET /shell.php?cmd=whoami HTTP/1.1", host: "localhost"
-2024/07/06 05:12:30 [warn] 8#8: *29 [lua] cache.lua:56: cacheGet(): failed to get key: block:192.168.65.1 nil, client: 192.168.65.1, server: , request: "GET /shell.php?cmd=whoami HTTP/1.1", host: "localhost"
-2024/07/06 05:13:08 [info] 8#8: *30 [lua] waf.lua:285: waf(): IP: 192.168.65.1, client: 192.168.65.1, server: , request: "GET / HTTP/1.1", host: "localhost"
-2024/07/06 05:13:08 [warn] 8#8: *30 [lua] cache.lua:56: cacheGet(): failed to get key: block:192.168.65.1 nil, client: 192.168.65.1, server: , request: "GET / HTTP/1.1", host: "localhost"
-2024/07/06 05:13:08 [info] 8#8: *31 [lua] waf.lua:285: waf(): IP: 192.168.65.1, client: 192.168.65.1, server: , request: "GET /shell.php?cmd=whoami HTTP/1.1", host: "localhost"
-2024/07/06 05:13:08 [warn] 8#8: *31 [lua] cache.lua:56: cacheGet(): failed to get key: block:192.168.65.1 nil, client: 192.168.65.1, server: , request: "GET /shell.php?cmd=whoami HTTP/1.1", host: "localhost"
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:127: WAF init...... 
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:128: WAF loading config......
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: mode = protection
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: debug = on
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: log_path = /usr/local/openresty/nginx/logs/waf/
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: block_timeout = 600
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: block_count = 10
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: block_time = 600
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: log_expire = 15552000
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: exp_backup = on
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: exp_cmd = on
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: exp_dns = on
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: exp_ldap = on
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: exp_path = on
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: exp_sensitive = on
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: exp_sqli = on
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: exp_ssrf = on
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: exp_xss = on
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: exp_xxe = on
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: exp_bot = on
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: body_max_size = 52428800
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: decode_max_count = 10
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: cc_defence = on
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: cc_rate = 100
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: redis_host = redis
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: redis_port = 6379
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: redis_password = 
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: redis_pool_size = 10
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:41: load_config(): WAF Config line match: redis_timeouts = 1000,1000,1000
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:131: WAF loading ips......
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:133: WAF loading rules......
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:112: load_rules(): WAF initialized with rule: /usr/local/openresty/waf/rules/backup.lua
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:112: load_rules(): WAF initialized with rule: /usr/local/openresty/waf/rules/bot.lua
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:112: load_rules(): WAF initialized with rule: /usr/local/openresty/waf/rules/cmd.lua
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:112: load_rules(): WAF initialized with rule: /usr/local/openresty/waf/rules/dns.lua
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:112: load_rules(): WAF initialized with rule: /usr/local/openresty/waf/rules/ldap.lua
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:112: load_rules(): WAF initialized with rule: /usr/local/openresty/waf/rules/path.lua
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:112: load_rules(): WAF initialized with rule: /usr/local/openresty/waf/rules/sensitive.lua
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:112: load_rules(): WAF initialized with rule: /usr/local/openresty/waf/rules/sqli.lua
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:112: load_rules(): WAF initialized with rule: /usr/local/openresty/waf/rules/ssrf.lua
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:112: load_rules(): WAF initialized with rule: /usr/local/openresty/waf/rules/xss.lua
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:112: load_rules(): WAF initialized with rule: /usr/local/openresty/waf/rules/xxe.lua
+2024/07/08 00:40:17 [info] 1#1: [lua] init.lua:135: WAF init finished.
+2024/07/08 00:40:17 [notice] 1#1: using the "epoll" event method
+2024/07/08 00:40:17 [notice] 1#1: openresty/1.25.3.1
+2024/07/08 00:40:17 [notice] 1#1: built by gcc 13.2.1 20240309 (Alpine 13.2.1_git20240309) 
+2024/07/08 00:40:17 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/07/08 00:40:17 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/07/08 00:40:17 [notice] 1#1: start worker processes
+2024/07/08 00:40:17 [notice] 1#1: start worker process 8
+2024/07/08 00:40:17 [notice] 1#1: start worker process 9
+2024/07/08 00:40:17 [notice] 1#1: start worker process 10
+2024/07/08 00:40:17 [notice] 1#1: start worker process 11
+2024/07/08 00:40:17 [notice] 1#1: start worker process 12
+2024/07/08 00:40:17 [notice] 1#1: start worker process 13
+2024/07/08 00:40:17 [notice] 1#1: start worker process 14
+2024/07/08 00:40:17 [notice] 1#1: start worker process 15
+2024/07/08 00:40:17 [notice] 1#1: start worker process 16
+2024/07/08 00:40:17 [notice] 1#1: start worker process 17
+2024/07/08 00:40:17 [notice] 1#1: start worker process 18
+2024/07/08 00:40:17 [notice] 1#1: start worker process 19
+2024/07/08 00:40:17 [notice] 1#1: start worker process 20
+2024/07/08 00:40:17 [notice] 1#1: start worker process 21
+2024/07/08 00:40:17 [notice] 1#1: start worker process 22
+2024/07/08 00:40:17 [notice] 1#1: start worker process 23

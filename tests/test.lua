@@ -14,7 +14,7 @@ package.path = package.path .. ";" .. CURRENT_PATH .. "/?.lua"
 HttpClient = require "HttpClient"
 
 client = HttpClient:new()
-
+client:set_header("User-Agent", "TEST_CLIENT/1.0")
 url = "http://localhost"
 
 color = {
@@ -34,27 +34,43 @@ function printColor(color1, msg)
     print(color1 .. msg .. color.reset)
 end
 
-function assertEqual(a, b,name)
 
-    if a == b then
-        printColor(color.green,name.. " 测试通过")
+function assertContain(a, b, name)
+    if string.find(a, b) then
+        printColor( color.green,name ..  " Test Passed ")
+        return true
     else
-        printColor(color.red, name.."测试失败".." 期望值:"..b.." 实际值:"..a)
-    end
-end
-
-function assertContain(a, b,name)
-    if string.find(a,b) then
-        printColor(color.green,name.. " 测试通过")
-    else
-        printColor(color.red, name.."测试失败".." 期望值:"..b.." 实际值:"..a)
+        print(color.red .. name.." Test Failed "..color.reset .. " Expected: " ..color.cyan.. b ..color.reset.. " Actual: " .. color.cyan ..a..color.reset)
+        return false
     end
 end
 
 
-printColor(color.blue , "测试 命令执行" )
+function assertAll(actual_body, expected_body, actual_status, expected_status, name)
+    TOTAL = TOTAL + 1
+    if assertContain(actual_body, expected_body, name .. " Body") then
+        PASS = PASS + 1
+    end
+end
 
-require "cmd"
-
-
-printColor(color.blue , "测试 命令执行结束" )
+TEST_CASE = ""
+TOTAL = 0
+PASS = 0
+function testAll()
+    local testCases = {
+        cmd = "Command Execution",
+    }
+    for name, desc in pairs(testCases) do
+        TOTAL = 0
+        PASS = 0
+        TEST_CASE = desc.." - "
+        printColor(color.blue, "--------------------------\nTesting "..desc.." Started")
+        require(name)
+        printColor(color.blue, "Testing "..desc.." Finished")
+        printColor(color.green, "Total Test Cases: "..TOTAL)
+        printColor(color.green, "Total Passed: "..PASS)
+        printColor(color.red, "Total Failed: "..TOTAL - PASS)
+        printColor(color.blue, "--------------------------")
+    end
+end
+testAll()

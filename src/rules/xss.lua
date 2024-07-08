@@ -4,17 +4,61 @@ local _M = {
   level = "medium",
   position = "all",
   rules = {
-      "<script\\b[^<]*(?:(?!<\\/script>)<[^<]*)*<\\/script>",
-      "<iframe\\b[^<]*(?:(?!<\\/iframe>)<[^<]*)*<\\/iframe>",
-      "<object\\b[^<]*(?:(?!<\\/object>)<[^<]*)*<\\/object>",
-      "<embed\\b[^<]*(?:(?!<\\/embed>)<[^<]*)*<\\/embed>",
-      "<style\\b[^<]*(?:(?!<\\/style>)<[^<]*)*<\\/style>",
-      "<link\\b[^<]*(?:(?!<\\/link>)<[^<]*)*<\\/link>",
-      "\\bjavascript:[^<]+",
-      "data:text\\/html",
-      "vbscript:[^<]+",
-      "on[a-zA-Z]+=[\"'].*[\"']",
-      "<[a-zA-Z]+[\\s\\S]*>"
+    {
+      pattern = [[ <script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script> ]],
+      name = "Script Tag Injection",
+      confidence = 9
+    },
+    {
+      pattern = [[ <iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe> ]],
+      name = "Iframe Tag Injection",
+      confidence = 9
+    },
+    {
+      pattern = [[ <object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object> ]],
+      name = "Object Tag Injection",
+      confidence =9
+    },
+    {
+      pattern = [[ <embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed> ]],
+      name = "Embed Tag Injection",
+      confidence =9
+    },
+    {
+      pattern = [[ <style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style> ]],
+      name = "Style Tag Injection",
+      confidence =9
+    },
+    {
+      pattern = [[ <link\b[^<]*(?:(?!<\/link>)<[^<]*)*<\/link> ]],
+      name = "Link Tag Injection",
+      confidence = 9
+    },
+    {
+      pattern = [[ \bjavascript:[^<]+ ]],
+      name = "Javascript URI",
+      confidence =8
+    },
+    {
+      pattern = [[ data:text/html ]],
+      name = "Data URI",
+      confidence = 8
+    },
+    {
+      pattern = [[ vbscript:[^<]+ ]],
+      name = "VBScript URI",
+      confidence = 8
+    },
+    {
+      pattern = [[ on[a-zA-Z]+=[\"'].*[\"'] ]],
+      name = "Event Handler Injection",
+      confidence = 8
+    },
+    {
+      pattern = [[ <[a-zA-Z]+[\s\S]*>]],
+      name = "HTML Tag Injection",
+      confidence = 4
+    }
   }
 }
 

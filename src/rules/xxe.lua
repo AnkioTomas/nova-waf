@@ -4,10 +4,26 @@ local _M = {
   level = "high",
   position = "all",
   rules = {
-      "<!ENTITY%s+.+>",
-      "<!DOCTYPE%s+.+%[",
-      "<!ENTITY%s+.+%s+SYSTEM%s+['\"].+['\"]%s*>",
-      "<!ENTITY%s+.+%s+PUBLIC%s+['\"].+['\"]%s+['\"].+['\"]%s*>"
+    {
+      pattern = [[ <!ENTITY\s+.+> ]],
+      name = "Generic ENTITY Declaration",
+      confidence = 9
+    },
+    {
+      pattern = [[ <!DOCTYPE\s+.+\[ ]],
+      name = "DOCTYPE Declaration",
+      confidence = 2
+    },
+    {
+      pattern = [[ <!ENTITY\s+.+\s+SYSTEM\s+['\"].+['\"]\s*> ]],
+      name = "SYSTEM Entity Declaration",
+      confidence = 9
+    },
+    {
+      pattern = [[ <!ENTITY\s+.+\s+PUBLIC\s+['\"].+['\"]\s+['\"].+['\"]\s*> ]],
+      name = "PUBLIC Entity Declaration",
+      confidence = 9
+    }
   }
 }
 
