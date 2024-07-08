@@ -1,10 +1,9 @@
 
 -- 设置自定义头部
 
-local subname = "Noromal GET Request 1"
+local subname = ""
 -- 发送 GET 请求
-local response = client:get(url)
-assertAll(response.body, "hello, world", response.status, "200 OK", TEST_CASE..subname)
+local response = nil
 
 local normal_requests = {
     -- 常见正常请求

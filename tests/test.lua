@@ -36,8 +36,11 @@ end
 
 
 function assertContain(a, b, name)
+    printColor( color.blue,name ..  " Testing... ")
+
     if string.find(a, b) then
-        printColor( color.green,name ..  " Test Passed ")
+        io.write("\27[A\27[2K") -- 清除当前行
+       -- printColor( color.green,name ..  " Test Passed ")
         return true
     else
         print(color.red .. name.." Test Failed "..color.reset .. " Expected: " ..color.cyan.. b ..color.reset.. " Actual: " .. color.cyan ..a..color.reset)
@@ -56,6 +59,13 @@ end
 TEST_CASE = ""
 TOTAL = 0
 PASS = 0
+if package.config:sub(1,1) == '\\' then
+    -- Windows
+    os.execute("cls")
+else
+    -- Unix-like (Linux, macOS, etc.)
+    os.execute("clear")
+end
 function testAll()
     local testCases = {
         cmd = "Command Execution",
@@ -69,10 +79,10 @@ function testAll()
         printColor(color.blue, "--------------------------\nTesting "..desc.." Started")
         client:set_header("User-Agent", "NovaWaf/1.0")
         require(name)
-        printColor(color.blue, "Testing "..desc.." Finished")
+        printColor(color.blue,  "Testing "..desc.." Finished")
         printColor(color.green, "Total Test Cases: "..TOTAL)
         printColor(color.green, "Total Passed: "..PASS)
-        printColor(color.red, "Total Failed: "..TOTAL - PASS)
+        printColor(color.red,   "Total Failed: "..TOTAL - PASS)
         printColor(color.blue, "--------------------------")
     end
 end
