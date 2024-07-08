@@ -5,20 +5,22 @@ local _M = {
     location = "all",
     rules = {
         {
-            pattern = [[ \.(bak[0-9]*|backup[0-9]*|old[0-9]*|orig|copy|save|tmp|temp|swp|tgz|sql|db|sqlite|log|1) ]],
-            name = "Common Backup File Extensions",
-            confidence = 9
+            pattern = [[ \.(bak[0-9]*|backup[0-9]*|old[0-9]*|orig|copy|save|tmp|temp|swp[0-9]*|sql[0-9]*|db[0-9]*|sqlite[0-9]*|log[0-9]*|1|part|crdownload|dmp|~|\.~[0-9]*~|bak~|old~|tmp~)(?!\w) ]],
+            
+            name = "Common Backup and Temporary File Extensions",
+            confidence = 3
         },
         {
-            pattern = [[ (backup|bak|old|www)[0-9]*\.(tar|gz|zip|rar|7z|tgz) ]],
+            pattern = [[ (backup|bak|old|www|site|web|archive|copy|stored|saved|temp|temporary|dump|data)[0-9]*\.(tar|gz|zip|rar|7z|tgz)(?!\w) ]],
             name = "Unsecure Compressed Backup Files",
-            confidence = 9
+            confidence = 3
         },
+        
         {
-            pattern = [[ \.(?:git|env|htaccess|config|svn|DS_Store|bzr|cvs|hg|npmrc|yarnrc|editorconfig|eslintignore|prettierignore|dockerignore|gitignore|gitattributes|gitmodules|credentials|aws|bashrc|bash_profile|bash_logout|inputrc|nanorc|profile|tmux\.conf|vimrc|zshrc|zprofile|zlogin|zlogout|zpreztorc) ]],
+            pattern = [[ \.(?:git|env|htaccess|config|svn|DS_Store|bzr|cvs|hg|npmrc|yarnrc|editorconfig|eslintignore|prettierignore|dockerignore|gitignore|gitattributes|gitmodules|credentials|aws|bashrc|bash_profile|bash_logout|inputrc|nanorc|profile|tmux\.conf|vimrc|zshrc|zprofile|zlogin|zlogout|zpreztorc)(?!\w) ]],
             name = "Hidden Files",
-            confidence = 8
-        }
+            confidence = 3
+        },
     }
 }
 

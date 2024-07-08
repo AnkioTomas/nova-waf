@@ -7,12 +7,12 @@ local _M = {
     {
       pattern = [[ /\.\./ ]],
       name = "Parent Directory Traversal (/../)",
-      confidence = 9
+      confidence = 2
     },
     {
       pattern = [[ \.\./]],
       name = "Parent Directory Traversal (../)",
-      confidence = 9
+      confidence = 2
     },
   }
 }

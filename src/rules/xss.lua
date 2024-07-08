@@ -7,57 +7,57 @@ local _M = {
     {
       pattern = [[ <script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script> ]],
       name = "Script Tag Injection",
-      confidence = 9
+      confidence = 3
     },
     {
       pattern = [[ <iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe> ]],
       name = "Iframe Tag Injection",
-      confidence = 9
+      confidence = 3
     },
     {
       pattern = [[ <object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object> ]],
       name = "Object Tag Injection",
-      confidence =9
+      confidence =3
     },
     {
       pattern = [[ <embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed> ]],
       name = "Embed Tag Injection",
-      confidence =9
+      confidence =3
     },
     {
       pattern = [[ <style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style> ]],
       name = "Style Tag Injection",
-      confidence =9
+      confidence =3
     },
     {
       pattern = [[ <link\b[^<]*(?:(?!<\/link>)<[^<]*)*<\/link> ]],
       name = "Link Tag Injection",
-      confidence = 9
+      confidence = 3
     },
     {
       pattern = [[ \bjavascript:[^<]+ ]],
       name = "Javascript URI",
-      confidence =8
+      confidence =3
     },
     {
       pattern = [[ data:text/html ]],
       name = "Data URI",
-      confidence = 8
+      confidence = 2
     },
     {
       pattern = [[ vbscript:[^<]+ ]],
       name = "VBScript URI",
-      confidence = 8
+      confidence = 2
     },
     {
       pattern = [[ on[a-zA-Z]+=[\"'].*[\"'] ]],
       name = "Event Handler Injection",
-      confidence = 8
+      confidence = 3
     },
     {
       pattern = [[ <[a-zA-Z]+[\s\S]*>]],
       name = "HTML Tag Injection",
-      confidence = 4
+      confidence = 3
     }
   }
 }

@@ -7,47 +7,47 @@ local _M = {
     {
       pattern = [[ select\s+.*\s+from\s+.* ]],
       name = "Select-From Statement",
-      confidence = 9
+      confidence = 3
     },
     {
       pattern = [[ select\s+.*\s+limit\s+.* ]],
       name = "Select-Limit Statement",
-      confidence = 9
+      confidence = 3
     },
     {
       pattern = [[ UNION\s+SELECT ]],
       name = "Union-Select Statement",
-      confidence = 9
+      confidence = 3
     },
     {
       pattern = [[ sleep\s*\(\s*\d+\s*\) ]],
       name = "Sleep Function",
-      confidence = 9
+      confidence = 3
     },
     {
       pattern = [[ benchmark\s*\(\s*\d+\s*,\s*.*\s*\) ]],
       name = "Benchmark Function",
-      confidence = 9
+      confidence = 3
     },
     {
       pattern = [[ FROM\s+information_schema ]],
       name = "Information Schema Access",
-      confidence = 9
+      confidence = 3
     },
     {
       pattern = [[ INTO\s+(?:dump|out)file\s+.* ]],
       name = "Into Outfile Statement",
-      confidence = 9
+      confidence = 3
     },
     {
       pattern = [[ GROUP\s+BY\s+.*\s*\( ]],
       name = "Group By Statement",
-      confidence = 9
+      confidence = 3
     },
     {
       pattern = [[ load_file\s*\(\s*.*\s*\) ]],
       name = "Load File Function",
-      confidence = 9
+      confidence = 3
     },
     {
       pattern = [[ --\s ]],
@@ -57,12 +57,12 @@ local _M = {
     {
       pattern = [[ (?:\sor\s|\sand\s).*=.* ]],
       name = "Boolean Logic SQL Injection",
-      confidence = 4
+      confidence = 2
     },
     {
       pattern = [[ (?:\sunion\s|\sselect\s|\sinsert\s|\supdate\s|\sdelete\s|\sdrop\s|\salter\s) ]],
       name = "SQL Keywords",
-      confidence = 6
+      confidence = 2
     }
   }
 }

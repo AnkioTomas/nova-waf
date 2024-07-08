@@ -7,22 +7,22 @@ local _M = {
         {
             pattern = [[ dnslog\.[\w]+ ]],
             name = "DNSLog Blacklist Domain",
-            confidence = 9
+            confidence = 3
         },
         {
             pattern = [[ dig\.pm ]],
             name = "Dig.pm Domain",
-            confidence = 9
+            confidence = 3
         },
         {
             pattern = [[ ceye\.[\w]+ ]],
             name = "Ceye Domain",
-            confidence = 9
+            confidence = 3
         },
         {
             pattern = [[ "eyes\.sh ]],
             name = "Eyes.sh Domain",
-            confidence = 9
+            confidence = 3
         }
     }
 }
