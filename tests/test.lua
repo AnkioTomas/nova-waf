@@ -14,7 +14,7 @@ package.path = package.path .. ";" .. CURRENT_PATH .. "/?.lua"
 HttpClient = require "HttpClient"
 
 client = HttpClient:new()
-client:set_header("User-Agent", "TEST_CLIENT/1.0")
+client:set_header("User-Agent", "NovaWaf/1.0")
 url = "http://localhost"
 
 color = {
@@ -59,13 +59,15 @@ PASS = 0
 function testAll()
     local testCases = {
         cmd = "Command Execution",
-        backup = "Backup File"
+        backup = "Backup File",
+        bot = "Bot",
     }
     for name, desc in pairs(testCases) do
         TOTAL = 0
         PASS = 0
         TEST_CASE = desc.." - "
         printColor(color.blue, "--------------------------\nTesting "..desc.." Started")
+        client:set_header("User-Agent", "NovaWaf/1.0")
         require(name)
         printColor(color.blue, "Testing "..desc.." Finished")
         printColor(color.green, "Total Test Cases: "..TOTAL)

@@ -2,7 +2,7 @@ local _M = {
     name = "DNSLog",
     desc = "检测是否存在通过DNSLog加载外部资源的漏洞。",
     level = "medium",
-    location = "all",
+    position = "all",
     rules = {
         {
             pattern = [[ dnslog\.[\w]+ ]],

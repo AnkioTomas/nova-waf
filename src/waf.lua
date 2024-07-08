@@ -204,16 +204,21 @@ function Waf:attack()
         else
             for key, rule in pairs(RULE_FILES) do
                 for _, patternItem in pairs(rule.rules) do
-                    local regex = string.lower(patternItem.pattern):match("^%s*(.-)%s*$")
-                    if ngx.re.match(data,regex, "isjo") then
-                        ngx.log(ngx.INFO, "Attack detected: ", rule.name, " - ", patternItem.name, " => ", regex)
-                        if self:inAttack(rule.name .. " - " .. patternItem.name, body, rule.level, rule.desc, patternItem.confidence) then
-                            if WAF_CONFIG["debug"] == "on" then
-                                self:ret403("Attack detected: " .. rule.name .. " - " .. patternItem.name .. " => " .. regex)
-                            else
-                                self:ret403("Attack detected.")
+                   
+                    local pos = rule.position
+                  --   ngx.log(ngx.INFO, "Check: ", pos, " - ", rule.name)
+                    if "all" == pos or data:sub(1, #pos) == pos then
+                        local regex = string.lower(patternItem.pattern):match("^%s*(.-)%s*$")
+                        if ngx.re.match(data,regex, "isjo") then
+                            ngx.log(ngx.INFO, "Attack detected: ", rule.name, " - ", patternItem.name, " => ", regex)
+                            if self:inAttack(rule.name .. " - " .. patternItem.name, body, rule.level, rule.desc, patternItem.confidence) then
+                                if WAF_CONFIG["debug"] == "on" then
+                                    self:ret403("Attack detected: " .. rule.name .. " - " .. patternItem.name .. " => " .. regex.." [TEXT] => "..data)
+                                else
+                                    self:ret403("Attack detected.")
+                                end
+                                return
                             end
-                            return
                         end
                     end
                 end

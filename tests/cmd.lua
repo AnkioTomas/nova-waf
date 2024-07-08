@@ -47,9 +47,6 @@ end
 
 
 
--- GET 2=id
-
-assertAll(response.body, "hello, world", response.status, "200 OK", TEST_CASE..subname)
 
 local test_cases = {
     -- PHP Functions
