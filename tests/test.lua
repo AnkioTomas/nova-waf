@@ -71,6 +71,8 @@ function testAll()
         cmd = "Command Execution",
         backup = "Backup File",
         bot = "Bot",
+        dns = "DNS",
+        ldap = "LDAP",
     }
     for name, desc in pairs(testCases) do
         TOTAL = 0

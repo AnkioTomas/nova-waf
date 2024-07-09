@@ -5,45 +5,21 @@ local _M = {
     position = "all",
     rules = {
         {
-            pattern = [[ \${jndi: ]],
-            name = "Basic JNDI Injection",
+            pattern = [[\${jndi:(?:ldap|ldaps|rmi|dns|nis|nds|corba|iiop):]],
+            name = "Basic and Protocol Variants JNDI Injection",
             confidence = 3
         },
         {
-            pattern = [[ \${jndi:ldap }]],
-            name = "URL Encoded JNDI Injection 1",
+            pattern = [[\%24\%7Bjndi:(?:ldap|ldaps|rmi|dns|nis|nds|corba|iiop):]],
+            name = "URL Encoded JNDI Injection",
             confidence = 3
         },
         {
-            pattern = [[ \%24\%7Bjndi: ]],
-            name = "URL Encoded JNDI Injection 2",
-            confidence = 3
-        },
-        {
-            pattern = [[ \${jNdI:ldAp ]],
-            name = "Mixed Case JNDI Injection",
-            confidence = 3
-        },
-        {
-            pattern = [[ \${jndi:\${lower:l}\${lower:d}\${lower:a}\${lower:p}: ]],
-            name = "Lowercase Function Injection",
-            confidence = 3
-        },
-        {
-            pattern = [[ \${\${lower:j}\${lower:n}\${lower:d}i: ]],
-            name = "Nested Lowercase Function Injection",
-            confidence = 3
-        },
-        {
-            pattern = [[ \${\${::%-j}\${::%-n}\${::%-d}\${::%-i}:\${::%-l}\${::%-d}\${::%-a}\${::%-p}: ]],
+            pattern = [[\${(.+)?j}\${(.+)?n}\${(.+)?d}\${(.+)?i}:]],
             name = "Colon Prefixed Lowercase Function Injection",
             confidence = 3
         },
-        {
-            pattern = [[ \${\${env:BARFOO:%-j}ndi\${env:BARFOO:%-:}\${env:BARFOO:%-l}dap\${env:BARFOO:%-:} ]],
-            name = "Environment Variable Injection",
-            confidence = 3
-        }
+
     }
 }
 
