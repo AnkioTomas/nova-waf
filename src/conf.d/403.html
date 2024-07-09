@@ -7,15 +7,14 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    color: #333;
-    text-align: center;
-    /* padding: 50px; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+            background-color: #f0f0f0;
+            color: #333;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
         .container {
             max-width: 600px;
@@ -28,16 +27,38 @@
         h1 {
             color: #dc3545;
         }
-       
+        .solution {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .solution ul {
+        list-style-type: disc;
+        padding-left: 20px;
+        line-height: 1.6;
+    }
+    .solution li {
+        margin-bottom: 8px;
+    }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>403 Forbidden</h1>
-        <p>抱歉，您的请求由于【{BLOCK_REASON}】已被阻断。</p>
-        <p>如果您认为这是一个错误，请联系网站管理员。</p>
-        <p>Sorry, your request has been blocked due to 【{BLOCK_REASON}】.</p>
-        <p>If you believe this is an error, please contact the website administrator.</p>
+        <p>抱歉，您的请求可能对本站造成威胁，已被Nova-WAF阻断。</p>
+        <p>Sorry, your request may pose a threat to our site and has been blocked by Nova-WAF.</p>
+        <div class="solution">
+            <h2>解决方案 / Solutions:</h2>
+            <ul>
+                <li>检查您的请求是否包含异常或格式不正确的参数。</li>
+                <li>Check if your request contains abnormal or incorrectly formatted parameters.</li>
+                <li>确保您的浏览器和插件/扩展程序已经更新到最新版本。</li>
+                <li>Ensure your browser and plugins/extensions are updated to the latest version.</li>
+                <li>排查您的电脑和浏览器插件，可能存在恶意应用程序。</li>
+                <li>Inspect your computer and browser plugins/extensions for potentially malicious applications.</li>
+                <li>如果确认这是误拦截，请联系本站管理员。</li>
+                <li>If you believe this is a false positive, please contact the site administrator.</li>
+            </ul>
+        </div>
     </div>
 </body>
 </html>

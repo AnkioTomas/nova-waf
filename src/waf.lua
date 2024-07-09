@@ -13,6 +13,7 @@ function Waf:new()
         key_possibly = "possibly:" .. ipAddr,
         key_attack = "attack:" .. ipAddr,
         key_attack_count = "attackCount:" .. ipAddr,
+        key_cc = "cc:" .. ipAddr,
        
         possibly_timeout = tonumber(WAF_CONFIG["possibly_timeout"]) or 300,
         possibly_count = tonumber(WAF_CONFIG["possibly_count"]) or 10,
@@ -94,10 +95,12 @@ function Waf:blockIp(attackCount)
     if WAF_CONFIG["debug"] == "on" then
         return true
     end
+    -- 在相当长的一段时间内如果又发生IP封禁行为，将会延长封禁时间
     localCache.cacheSet(self.key_block, 1, self.block_timeout * attackCount)
     localCache.cacheDel(self.key_possibly)
     localCache.cacheDel(self.key_attack)
-    localCache.cacheIncr(self.key_attack_count, self.block_timeout * 10)
+    -- 记录在100分钟内的攻击次数，用于提高封禁时间
+    localCache.cacheSet(self.key_attack_count,attackCount, self.block_timeout * 10)
     ngx.log(ngx.INFO, "Block IP: ", self.ip, " for ", self.block_timeout * attackCount, " seconds")
 end
 
@@ -110,13 +113,16 @@ function Waf:inAttack(rule, body, level, desc, possibly)
         return false
     end
 
+    -- 连续攻击封禁IP
     local attackCount, err = tonumber(localCache.cacheGet(self.key_attack_count) or 0)
     ngx.log(ngx.INFO, self.ip, " attackCount: ", attackCount)
-    if attackCount > 1 then
+    if attackCount > 0 then
+        -- 只要之前有一次攻击，并且被检测到存在攻击行为，就会封禁IP
         self:blockIp(attackCount)
         return true
     end
-
+    attackCount = attackCount + 1
+    -- 置信度高的攻击直接封禁IP
     local total = possibly
     local value, err = tonumber(localCache.cacheGet(self.key_possibly) or 0)
     total = possibly + value
@@ -128,6 +134,7 @@ function Waf:inAttack(rule, body, level, desc, possibly)
         return false
     end
 
+    -- 攻击次数超过阈值，封禁IP
     value = tonumber(localCache.cacheGet(self.key_attack) or 1)
     localCache.cacheIncr(self.key_attack, self.block_time)
     ngx.log(ngx.INFO, self.ip, " attack: ", value)
@@ -136,8 +143,6 @@ function Waf:inAttack(rule, body, level, desc, possibly)
         self:blockIp(attackCount)
         return
     end
-
-    localCache.cacheIncr(self.key_attack_count, self.block_timeout * 10)
     return true
 end
 
@@ -147,6 +152,24 @@ function Waf:isBigRequest()
     if body_size > max_body_size then
         return true
     end
+    return false
+end
+
+
+function Waf:isCCAttack()
+    if WAF_CONFIG["cc_defence"] == "off" then
+        return false
+    end
+    local limit = tonumber(WAF_CONFIG["cc_limit"]) or 100
+    local seconds = tonumber(WAF_CONFIG["cc_seconds"]) or 60
+
+    local key = self.key_cc
+    local value = tonumber(localCache.cacheGet(key) or 0)
+    local count = value + 1
+    if count > limit then
+        return true
+    end
+    localCache.cacheSet(key,count, seconds)
     return false
 end
 
@@ -210,7 +233,7 @@ function Waf:attack()
                     if "all" == pos or data:sub(1, #pos) == pos then
                         local regex = string.lower(patternItem.pattern):match("^%s*(.-)%s*$")
                         if ngx.re.match(data,regex, "isjo") then
-                            ngx.log(ngx.INFO, "Attack detected: ", rule.name, " - ", patternItem.name, " => ", regex)
+                           -- ngx.log(ngx.INFO, "Attack detected: ", rule.name, " - ", patternItem.name, " => ", regex)
                             if self:inAttack(rule.name .. " - " .. patternItem.name, body, rule.level, rule.desc, patternItem.confidence) then
                                 if WAF_CONFIG["debug"] == "on" then
                                     self:ret403("Attack detected: " .. rule.name .. " - " .. patternItem.name .. " => " .. regex.." [TEXT] => "..data)
@@ -255,25 +278,32 @@ function Waf:process()
         return
     end
 
+
+    if self:isCCAttack() then
+        ngx.log(ngx.WARN, "CC Attack")
+        self:ret403("CC Attack")
+        return
+    end
+
     if self:isBlockedIp() then
-        ngx.log(ngx.INFO, "Blocked IP")
+        ngx.log(ngx.WARN, "Blocked IP")
         self:ret403("Your IP has been blocked")
         return
     end
 
     if self:isWhiteIp() then
-        ngx.log(ngx.INFO, "White IP")
+        ngx.log(ngx.WARN, "White IP")
         return
     end
 
     if self:isBlackIp() then
-        ngx.log(ngx.INFO, "Black IP")
+        ngx.log(ngx.WARN, "Black IP")
         self:ret403("Your IP has been blacklisted")
         return
         end
 
-        if self:isBigRequest() then
-        ngx.log(ngx.INFO, "Big request")
+    if self:isBigRequest() then
+        ngx.log(ngx.WARN, "Big request")
         self:ret403("Request body is too large")
         return
     end
