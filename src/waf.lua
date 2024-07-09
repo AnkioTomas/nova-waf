@@ -141,9 +141,9 @@ function Waf:inAttack(rule, body, level, desc, possibly)
 
     if value > self.block_count then
         self:blockIp(attackCount)
-        return
+        return true
     end
-    return true
+    return false
 end
 
 function Waf:isBigRequest()
@@ -187,7 +187,32 @@ function Waf:UnEscapeUri(uri, max_attempts)
         return nil
     end
 
-    return string.lower(decoded_uri)
+
+ 
+    local decoded_uri_2 = decoded_uri
+    prev_decoded_uri = ""
+    attempts = 0
+    -- 解码字符实体的函数
+    while decoded_uri_2 ~= prev_decoded_uri and attempts < max_attempts do
+        prev_decoded_uri = decoded_uri_2
+        local new_decoded_uri, _, err = ngx.re.gsub(decoded_uri_2, "&#(\\d+);", function(m)
+            return string.char(tonumber(m[1]))
+        end, "jo")
+    
+        if not new_decoded_uri then
+            ngx.log(ngx.ERR, "Error during regex substitution: ", err)
+            return nil
+        end
+    
+        decoded_uri_2 = new_decoded_uri
+        attempts = attempts + 1
+    end
+
+    if attempts >= max_attempts then
+        return nil
+    end
+
+    return string.lower(decoded_uri_2)
 end
 
 function Waf:trim(s)

@@ -50,13 +50,18 @@ local _M = {
       confidence = 2
     },
     {
-      pattern = [[ on[a-zA-Z]+=[\"'].*[\"'] ]],
+      pattern = [[ <.+on\w+= ]],
       name = "Event Handler Injection",
       confidence = 3
     },
     {
       pattern = [[ <[a-zA-Z]+[\s\S]*>]],
       name = "HTML Tag Injection",
+      confidence = 3
+    },
+    {
+      pattern = [[ href(.+)javascript: ]],
+      name = "Encoded JavaScript URL",
       confidence = 3
     }
   }

@@ -40,7 +40,7 @@ local _M = {
       confidence = 3
     },
     {
-      pattern = [[ GROUP\s+BY\s+.*\s*\( ]],
+      pattern = [[ GROUP\s+BY]],
       name = "Group By Statement",
       confidence = 3
     },
@@ -55,6 +55,11 @@ local _M = {
       confidence = 1
     },
     {
+      pattern = [[ \/\*.+ ]],
+      name = "SQL Comment",
+      confidence = 1
+    },
+    {
       pattern = [[ (?:\sor\s|\sand\s).*=.* ]],
       name = "Boolean Logic SQL Injection",
       confidence = 2
@@ -63,7 +68,12 @@ local _M = {
       pattern = [[ (?:\sunion\s|\sselect\s|\sinsert\s|\supdate\s|\sdelete\s|\sdrop\s|\salter\s) ]],
       name = "SQL Keywords",
       confidence = 2
-    }
+    },
+    {
+      pattern = [[ (?:\"|'|\d+|\))(?:\s)?(?:or|and|union|\/\*|#|--) ]],
+      name = "Sql Injection Test",
+      confidence = 1
+    },
   }
 }
 

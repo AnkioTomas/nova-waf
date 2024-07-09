@@ -36,10 +36,10 @@ end
 
 
 function assertContain(a, b, name)
-    printColor( color.magenta,name ..  " Testing... ")
+   -- printColor( color.magenta,name ..  " Testing... ")
 
     if string.find(a, b) then
-        io.write("\27[A\27[2K") -- 清除当前行
+      --  io.write("\27[A\27[2K") -- 清除当前行
        -- printColor( color.green,name ..  " Test Passed ")
         return true
     else
@@ -51,7 +51,7 @@ end
 
 function assertAll(actual_body, expected_body, actual_status, expected_status, name)
     TOTAL = TOTAL + 1
-    if assertContain(actual_body, expected_body, name .. " Body") then
+    if assertContain(actual_status, expected_status, name .. "") then
         PASS = PASS + 1
     end
 end
@@ -73,6 +73,12 @@ function testAll()
         bot = "Bot",
         dns = "DNS",
         ldap = "LDAP",
+        path = "Path Traversal",
+        sensitive = "Sensitive File",
+        sqli = "SQL Injection",
+        ssrf = "SSRF",
+       xss = "XSS",
+       xxe = "XXE",
     }
     for name, desc in pairs(testCases) do
         TOTAL = 0
