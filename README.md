@@ -3,6 +3,8 @@
 ![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg) ![OpenResty](https://img.shields.io/badge/OpenResty-1.19.3.1-orange.svg)
 
 
+> Nova-WAF目前还在初始阶段，尚未经过生产环境测试，请勿用于生产环境，以免影响正常业务。
+
 ## 概述
 
 Nova-WAF 是一个基于 OpenResty 和 Lua 脚本的 Web 应用防火墙 (WAF)。该项目旨在提供一种高效且可扩展的方式来保护 Web 应用免受各种网络攻击，如 SQL 注入、XSS 攻击、DDoS 攻击等。
@@ -223,12 +225,33 @@ return _M
 ## 测试
 
 
+### 服务器环境搭建
+
 ```shell
 cd openresty
 docker-compose up
 ```
 
-默认映射 80 和 443 端口到本地，可以根据需要自行修改。
+默认映射 80 和 443 端口到本地，可以根据需要自行修改，同时还需要修改`tests/test.lua#L18`测试地址。
+
+
+### 本地执行测试
+
+```shell
+lua tests/test.lua
+```
+
+### 测试结果
+
+全部PASS即为测试通过。
+
+### 新增规则测试
+
+如果你需要自行新增规则并测试请按照如下操作：
+
+- 在`rules`文件夹添加你的规则文件
+- 在`tests`文件夹编写测试用例
+- 在`tests/test.lua#L81`文件添加测试文件
 
 ## 贡献
 
