@@ -50,16 +50,6 @@ local _M = {
       confidence = 3
     },
     {
-      pattern = [[ --\s ]],
-      name = "SQL Comment",
-      confidence = 1
-    },
-    {
-      pattern = [[ \/\*.+ ]],
-      name = "SQL Comment",
-      confidence = 1
-    },
-    {
       pattern = [[ (?:\sor\s|\sand\s).*=.* ]],
       name = "Boolean Logic SQL Injection",
       confidence = 2
