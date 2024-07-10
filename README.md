@@ -46,6 +46,9 @@ Nova-WAF 是一个基于 OpenResty 和 Lua 脚本的 Web 应用防火墙 (WAF)�
    ```
 
 ## 使用
+
+> 修改配置/规则需要重启Nginx才能生效。
+
 ### WAF 配置
 
 Nova-Waf的配置文件位于`src/conf.d/waf.conf`，以下是具体的配置说明：
@@ -96,6 +99,8 @@ cc_defence = "off"      # 关闭CC攻击防护
 cc_limit = 100          # CC攻击访问频率
 cc_seconds = 60         # CC攻击时间窗口
 
+# 统计功能
+statistics = "on"
 ```
 
 ### 拦截页面配置
@@ -131,6 +136,99 @@ local _M = {
 return _M
 
 ```
+
+### 拦截日志
+
+拦截日志是按照`logs/当天日期/访问IP.log`的形式存储在日志目录。
+
+每一行是一个`json`数据。
+
+- `request_uri`：请求的路径
+- `request_protocol`：请求的协议
+- `request_data`：请求的数据
+- `user_agent`：用户代理字段
+- `headers`：headers字段列表
+- `ip`：被拦截的IP
+- `request_id`：nginx自动生成的请求ID
+- `attack_type`：匹配到的规则名称 （形如`类型 - 具体规则名`）
+- `request_time`：响应时间
+- `http_method`：请求方法
+
+一个典型的拦截日志如下：
+
+```json
+{
+    "request_uri": "\/favicon.ico",
+    "request_protocol": "HTTP\/1.1",
+    "request_data": "",
+    "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/126.0.0.0 Safari\/537.36",
+    "headers": {
+        "user-agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/126.0.0.0 Safari\/537.36",
+        "sec-fetch-site": "same-origin",
+        "host": "localhost",
+        "sec-fetch-mode": "no-cors",
+        "accept": "image\/avif,image\/webp,image\/apng,image\/svg+xml,image\/*,*\/*;q=0.8",
+        "sec-fetch-dest": "image",
+        "referer": "http:\/\/localhost\/?id=1%27%20and%20%271%27=%271",
+        "sec-ch-ua": "\"Not\/A)Brand\";v=\"8\", \"Chromium\";v=\"126\", \"Google Chrome\";v=\"126\"",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "dnt": "1",
+        "accept-language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
+        "sec-ch-ua-mobile": "?0",
+        "cookie": "Webstorm-b68be0e3=b5b914d4-3cd2-404e-93a8-e54dd5538021; _yapi_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjExLCJpYXQiOjE3MjA1MDk5NzYsImV4cCI6MTcyMTExNDc3Nn0.rfoDMdR1w0uaKHpAmdhN0nuE-4cbaLJuaggZzdAMbrk; _yapi_uid=11",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-gpc": "1",
+        "connection": "keep-alive"
+    },
+    "ip": "172.18.0.1",
+    "request_id": "14c298e50dedded0ca984bea1cadf3f6",
+    "attack_type": "Sql Injection - SQL Comment",
+    "request_time": "0.000",
+    "http_method": "GET"
+}
+```
+
+
+
+### 统计功能
+
+统计的周期是一小时，数据按照 `count/当天日期/当前时.json`的形式存储在日志目录。
+
+
+统计的数据类型
+
+- 响应状态码：`count_status_`开头，后面是具体响应码，统计的是响应次数。
+- 拦截请求数：`count_reqDenyCount`
+- 访问的站点数：`count_host_`开头，后面是具体的请求站点，数据从`HOST`字段获取，可能被伪造。
+- 请求总数：`count_reqCount`
+- 请求来源：`count_referer_`开头，后面跟随具体的referer链接。
+- 请求IP：`count_ip_`开头，后面跟随具体的请求Ip，如果WAF所在的nginx不是边界路由，请在边界路由的nginx上添加`proxy_set_header X-Forwarded-For $remote_addr;`防止IP伪造。
+- 用户的操作系统/爬虫：`count_os_`开头，后面跟随具体的操作系统/爬虫信息。
+
+一个典型的统计数据如下：
+
+``` json
+{
+    "count_status_403": 13,
+    "count_status_200": 3,
+    "count_reqDenyCount": 13,
+    "count_host_localhost": 16,
+    "count_reqCount": 16,
+    "count_referer_http:\/\/localhost\/?id=1%27%20and%20%271%27=%271": 8,
+    "count_ip_172.18.0.1": 16,
+    "count_os_Windows 10": 16
+}
+```
+
+## 测试
+
+
+```shell
+cd openresty
+docker-compose up
+```
+
+默认映射 80 和 443 端口到本地，可以根据需要自行修改。
 
 ## 贡献
 
