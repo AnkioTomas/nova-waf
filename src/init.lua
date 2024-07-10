@@ -120,7 +120,16 @@ function load_debug()
     if WAF_CONFIG["debug"] == "on" then
         DEBUG = true
     end
+    local logPath = WAF_CONFIG["log_path"]
+  -- 如果logpath目录不存在，则创建目录
+    local f = io.open(logPath, "r")
+    if not f then
+      os.execute("mkdir -p " .. logPath .. " && chmod 777 " .. logPath)
+    else
+      f:close()
+    end
 end
+
 
 
 

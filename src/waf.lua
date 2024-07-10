@@ -1,6 +1,8 @@
 local localCache = require "cache"
-
-local Waf = {}
+local localCount = require "count"
+local Waf = {
+    
+}
 Waf.__index = Waf
 
 -- Constructor
@@ -20,6 +22,8 @@ function Waf:new()
         block_count = tonumber(WAF_CONFIG["block_count"]) or 10,
         block_time = tonumber(WAF_CONFIG["block_time"]) or 600,
         block_timeout = tonumber(WAF_CONFIG["block_timeout"]) or 600,
+        cache = localCache:new(),
+        count = localCount:new()
      }
     setmetatable(instance, self)
     return instance
@@ -40,7 +44,7 @@ function Waf:isBlackIp()
 end
 
 function Waf:isBlockedIp()
-    local value, err = localCache.cacheGet(self.key_block)
+    local value, err = self.cache:cacheGet(self.key_block)
     if value then
         return true
     end
@@ -48,6 +52,7 @@ function Waf:isBlockedIp()
 end
 
 function Waf:ret403(msg)
+    self.count:addReqDenyCount()
     local file = io.open(CURRENT_PATH .. "conf.d/403.html", "r")
     local content = file:read("*all")
     file:close()
@@ -65,17 +70,15 @@ function Waf:ret403(msg)
 end
 
 function Waf:recordRequest(rule, body)
-    local log = WAF_CONFIG["log_path"] .. os.date("%Y-%m-%d") .. self.ip .. ".log"
     local logger = require "logger"
     local cjson = require "cjson"
-    local hostLogger = logger:new(WAF_CONFIG["log_path"], self.ip, true)
+    local hostLogger = logger:new(self.ip)
     local logTable = {
         request_id = ngx.var.request_id,
         attack_type = rule,
         ip = self.ip,
         request_time = ngx.var.request_time,
         http_method = ngx.var.request_method,
-        server = ngx.var.server_name,
         request_uri = ngx.var.request_uri,
         request_protocol = ngx.var.server_protocol,
         request_data = body,
@@ -96,11 +99,11 @@ function Waf:blockIp(attackCount)
         return true
     end
     -- 在相当长的一段时间内如果又发生IP封禁行为，将会延长封禁时间
-    localCache.cacheSet(self.key_block, 1, self.block_timeout * attackCount)
-    localCache.cacheDel(self.key_possibly)
-    localCache.cacheDel(self.key_attack)
+    self.cache:cacheSet(self.key_block, 1, self.block_timeout * attackCount)
+    self.cache:cacheDel(self.key_possibly)
+    self.cache:cacheDel(self.key_attack)
     -- 记录在100分钟内的攻击次数，用于提高封禁时间
-    localCache.cacheSet(self.key_attack_count,attackCount, self.block_timeout * 10)
+    self.cache:cacheSet(self.key_attack_count,attackCount, self.block_timeout * 10)
     ngx.log(ngx.INFO, "Block IP: ", self.ip, " for ", self.block_timeout * attackCount, " seconds")
 end
 
@@ -114,7 +117,7 @@ function Waf:inAttack(rule, body, level, desc, possibly)
     end
 
     -- 连续攻击封禁IP
-    local attackCount, err = tonumber(localCache.cacheGet(self.key_attack_count) or 0)
+    local attackCount, err = tonumber(self.cache:cacheGet(self.key_attack_count) or 0)
     ngx.log(ngx.INFO, self.ip, " attackCount: ", attackCount)
     if attackCount > 0 then
         -- 只要之前有一次攻击，并且被检测到存在攻击行为，就会封禁IP
@@ -124,19 +127,19 @@ function Waf:inAttack(rule, body, level, desc, possibly)
     attackCount = attackCount + 1
     -- 置信度高的攻击直接封禁IP
     local total = possibly
-    local value, err = tonumber(localCache.cacheGet(self.key_possibly) or 0)
+    local value, err = tonumber(self.cache:cacheGet(self.key_possibly) or 0)
     total = possibly + value
 
     ngx.log(ngx.INFO, self.ip, " possibly: ", total)
 
-    localCache.cacheSet(self.key_possibly, total, self.possibly_timeout)
+    self.cache:cacheSet(self.key_possibly, total, self.possibly_timeout)
     if total < tonumber(self.possibly_count) then
         return false
     end
 
     -- 攻击次数超过阈值，封禁IP
-    value = tonumber(localCache.cacheGet(self.key_attack) or 1)
-    localCache.cacheIncr(self.key_attack, self.block_time)
+    value = tonumber(self.cache:cacheGet(self.key_attack) or 1)
+    self.cache:cacheSet(self.key_attack,value + 1, self.block_time)
     ngx.log(ngx.INFO, self.ip, " attack: ", value)
 
     if value > self.block_count then
@@ -164,12 +167,12 @@ function Waf:isCCAttack()
     local seconds = tonumber(WAF_CONFIG["cc_seconds"]) or 60
 
     local key = self.key_cc
-    local value = tonumber(localCache.cacheGet(key) or 0)
+    local value = tonumber(self.cache:cacheGet(key) or 0)
     local count = value + 1
     if count > limit then
         return true
     end
-    localCache.cacheSet(key,count, seconds)
+    self.cache:cacheSet(key,count, seconds)
     return false
 end
 
@@ -303,9 +306,11 @@ function Waf:process()
         return
     end
 
+    self.count:addReqCount(self.ip)
 
     if self:isCCAttack() then
         ngx.log(ngx.WARN, "CC Attack")
+        
         self:ret403("CC Attack")
         return
     end

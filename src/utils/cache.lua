@@ -1,86 +1,70 @@
-local tonumber = tonumber
-local tostring = tostring
-local ipairs = ipairs
-local ngxmatch = ngx.re.match
-
 local _M = {}
+_M.__index = _M
 
--- 缓存键前缀
--- local WAF_KEY = "nava-waf"
+-- 构造函数
+function _M:new(cacheName)
+    if not cacheName then
+        cacheName = "nova_waf"
+    end
+    local t = {
+        cache = ngx.shared[cacheName],
+    }
+    
+    setmetatable(t, self)
+    return t
+end
 
--- 使用 ngx.shared.DICT 作为共享缓存
-local cache = ngx.shared.nova_waf
-
--- 将数据存储在共享缓存中
-function _M.cacheSet(key, value, expireTime)
-    -- 设置键值对，并指定过期时间（可选）
-    -- 返回值：成功返回 true，失败返回 nil，并记录错误日志
-    local ok, err = cache:set(key, value, expireTime)
+-- 设置键值对，并指定过期时间（可选）
+function _M:cacheSet(key, value, expireTime)
+    local ok, err = self.cache:set(key, value, expireTime)
     if not ok then
         ngx.log(ngx.ERR, "failed to set key: " .. key .. " ", err)
     end
     return ok, err
 end
 
--- 批量设置键值对
-function _M.cacheBatchSet(keyTable, value, keyPrefix)
-    local ok, err = true, nil
-    if keyPrefix then
-        -- 使用指定前缀设置多个键值对
-        for _, ip in ipairs(keyTable) do
-            ok, err = cache:set(keyPrefix .. ip, value)
-            if not ok then
-                ngx.log(ngx.ERR, "failed to set key: " .. keyPrefix .. ip .. " ", err)
-                break
-            end
+-- 增加键的值
+function _M:cacheIncr(key, increment, expireTime)
+    local value, err = self.cache:incr(key, increment or 1)
+    if not value and err == "not found" then
+        value, err = self.cache:add(key, increment or 1, expireTime)
+        if not value then
+            ngx.log(ngx.ERR, "failed to add key: " .. key .. " ", err)
         end
-    else
-        -- 直接设置多个键值对
-        for _, ip in ipairs(keyTable) do
-            ok, err = cache:set(ip, value)
-            if not ok then
-                ngx.log(ngx.ERR, "failed to set key: " .. ip .. " ", err)
-                break
-            end
-        end
+    elseif not value then
+        ngx.log(ngx.ERR, "failed to increment key: " .. key .. " ", err)
     end
-    return ok, err
+    return value, err
 end
 
 -- 获取指定键的值
-function _M.cacheGet(key)
-    -- 获取指定键的值
-    -- 返回值：成功返回值，失败返回 nil，并记录错误日志
-    local value, err = cache:get(key)
-    if not value then
-        ngx.log(ngx.WARN, "failed to get key: " .. key.. " ", err)
+function _M:cacheGet(key)
+    local value, err = self.cache:get(key)
+    if err then
+        ngx.log(ngx.WARN, "failed to get key: " .. key .. " ", err)
     end
     return value, err
 end
 
--- 自增指定键的值
-function _M.cacheIncr(key, expireTime)
-    -- 自增指定键的值，如果键不存在则初始化为 1
-    -- 返回值：成功返回新的值，失败返回 nil，并记录错误日志
-    local value, err = cache:incr(key, 1)
-    if not value then
-        -- 如果键不存在，则初始化为 1，并设置过期时间（可选）
-        value, err = cache:add(key, 1, expireTime)
-        if not value then
-            ngx.log(ngx.ERR, "failed to incr key: " .. key, err)
+-- 获取所有指定前缀的key
+function _M:getAllPrefixKeys(prefix, callback)
+    local keys = self.cache:get_keys(0)
+    local keys_processed = 0
+
+    for _, k in ipairs(keys) do
+        if k:find("^" .. prefix) then
+            callback(k)
+            keys_processed = keys_processed + 1
         end
-    elseif value == 1 and expireTime and expireTime > 0 then
-        -- 如果自增后的值为 1，并且设置了过期时间，则设置过期时间
-        cache:expire(key, expireTime)
     end
-    return value, err
+
+    ngx.log(ngx.INFO, "processed ", keys_processed, " keys with prefix: ", prefix)
+    return keys_processed
 end
 
 -- 删除指定键值对
-function _M.cacheDel(key)
-    -- 删除指定键值对
-    -- 返回值：成功返回 true，失败返回 nil，并记录错误日志
-    local ok, err = cache:delete(key)
+function _M:cacheDel(key)
+    local ok, err = self.cache:delete(key)
     if not ok then
         ngx.log(ngx.ERR, "failed to delete key: " .. key, err)
     end
