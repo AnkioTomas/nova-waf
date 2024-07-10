@@ -1,6 +1,10 @@
-# Nova-WAF
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg) ![OpenResty](https://img.shields.io/badge/OpenResty-1.19.3.1-orange.svg)
+<p align="center">
+  <img src="https://socialify.git.ci/AnkioTomas/nova-waf/image?font=Bitter&forks=1&issues=1&language=1&pattern=Overlapping%20Hexagons&pulls=1&stargazers=1&theme=Light" alt="bluetooth" width="640" height="320" />
+  </p>
+
+# 玄冰盾（Nova-WAF）
+
 
 
 > Nova-WAF目前还在初始阶段，尚未经过生产环境测试，请勿用于生产环境，以免影响正常业务。
