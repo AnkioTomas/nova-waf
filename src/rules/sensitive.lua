@@ -2,7 +2,7 @@ local _M = {
   name = "Sensitive File Exposure",
   desc = "检测是否存在敏感文件暴露在应用程序中。",
   level = "medium",
-  position = "all",
+  position = "uri",
   rules = {
     {
       pattern = [[ (config|settings|database|env|plist)\.(xml|json|ini|cfg|conf|properties|yml) ]],

@@ -2,7 +2,7 @@ local _M = {
   name = "XSS",
   desc = "XSS是一种常见的攻击手段，通过在输入框中输入JavaScript代码，获取用户的Cookie信息。",
   level = "medium",
-  position = "all",
+  position = "uri,body",
   rules = {
     {
       pattern = [[ <script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script> ]],

@@ -2,7 +2,7 @@ local _M = {
   name = "XXE",
   desc = "检测是否存在通过XML实体加载外部资源的漏洞。",
   level = "high",
-  position = "all",
+  position = "uri,body",
   rules = {
     {
       pattern = [[ <!ENTITY\s+.+> ]],

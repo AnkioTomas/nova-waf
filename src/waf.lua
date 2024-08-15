@@ -231,7 +231,7 @@ function Waf:attack()
     local checkData = {}
 
     uri = self:UnEscapeUri(uri, max_decode_count)
-    table.insert(checkData, uri)
+    table.insert(checkData, "uri: "..uri)
     local headers = ngx.req.get_headers()
 
     for k, v in pairs(headers) do
@@ -243,7 +243,7 @@ function Waf:attack()
     ngx.req.read_body()
     local body = ngx.req.get_body_data() or ""
     body = self:UnEscapeUri(body, max_decode_count)
-    table.insert(checkData, body)
+    table.insert(checkData, "body: "..body)
 
     for _, data in ipairs(checkData) do
         if data == nil then
@@ -256,22 +256,35 @@ function Waf:attack()
             for key, rule in pairs(RULE_FILES) do
                 for _, patternItem in pairs(rule.rules) do
                    
-                    local pos = rule.position
-                  --   ngx.log(ngx.INFO, "Check: ", pos, " - ", rule.name)
-                    if "all" == pos or data:sub(1, #pos) == pos then
-                        local regex = string.lower(patternItem.pattern):match("^%s*(.-)%s*$")
-                        if ngx.re.match(data,regex, "isjo") then
-                           -- ngx.log(ngx.INFO, "Attack detected: ", rule.name, " - ", patternItem.name, " => ", regex)
-                            if self:inAttack(rule.name .. " - " .. patternItem.name, body, rule.level, rule.desc, patternItem.confidence) then
-                                if WAF_CONFIG["debug"] == "on" then
-                                    self:ret403("Attack detected: " .. rule.name .. " - " .. patternItem.name .. " => " .. regex.." [TEXT] => "..data)
-                                else
-                                    self:ret403("Attack detected.")
-                                end
-                                return
-                            end
-                        end
+                    local positions = {}
+
+-- 使用 string.gmatch 分割字符串
+                    for part in string.gmatch(pos, '([^,]+)') do
+                        table.insert(positions, part)
                     end
+
+-- 现在 positions 是一个包含各部分的表
+-- 例如: positions = {"abc", "def", "ghi"}
+
+-- 在你的逻辑中使用分割后的部分
+                    for _, p in ipairs(positions) do
+                        if data:sub(1, #p) == p then
+                            local regex = string.lower(patternItem.pattern):match("^%s*(.-)%s*$")
+                            if ngx.re.match(data, regex, "isjo") then
+                                if self:inAttack(rule.name .. " - " .. patternItem.name, body, rule.level, rule.desc, patternItem.confidence) then
+                                    if WAF_CONFIG["debug"] == "on" then
+                                        self:ret403("Attack detected: " .. rule.name .. " - " .. patternItem.name .. " => " .. regex .. " [TEXT] => " .. data)
+                                    else
+                                        self:ret403("Attack detected.")
+                                    end    
+                                    return
+                                end
+                            end
+                            
+                        end
+                    end    
+                            
+
                 end
             end
         end

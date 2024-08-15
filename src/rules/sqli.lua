@@ -2,7 +2,7 @@ local _M = {
   name = "Sql Injection",
   desc = "SQL注入是一种常见的攻击手段，通过在输入框中输入SQL语句，获取数据库中的数据。",
   level = "high",
-  position = "all",
+  position = "uri,body",
   rules = {
     {
       pattern = [[ select\s+.*\s+from\s+.* ]],
@@ -59,11 +59,7 @@ local _M = {
       name = "SQL Keywords",
       confidence = 2
     },
-    {
-      pattern = [[ (?:\"|'|\d+|\))(?:\s)?(?:or|and|union|\/\*|#|--) ]],
-      name = "Sql Injection Test",
-      confidence = 1
-    },
+
   }
 }
 

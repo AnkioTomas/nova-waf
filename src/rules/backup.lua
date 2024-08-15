@@ -2,7 +2,7 @@ local _M = {
     name = "Backup File",
     desc = "检测是否存在不安全的备份文件暴露在应用程序中，包括隐藏文件。",
     level = "medium",
-    position = "all",
+    position = "uri",
     rules = {
         {
             pattern = [[ \.(bak[0-9]*|backup[0-9]*|old[0-9]*|orig|copy|save|tmp|temp|swp[0-9]*|sql[0-9]*|db[0-9]*|sqlite[0-9]*|log[0-9]*|1|part|crdownload|dmp|~|\.~[0-9]*~|bak~|old~|tmp~)(?![\w.;/\\-]) ]],

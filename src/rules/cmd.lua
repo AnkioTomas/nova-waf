@@ -2,7 +2,7 @@ local _M = {
     name = "Command Injection",  
     desc = "检测到可能的命令执行行为",  
     level = "high",  
-    position = "all",  
+    position = "uri,body",  
     rules = {  
         {
             pattern = [[ (exec|system|passthru|shell_exec|proc_open|popen) ]],
